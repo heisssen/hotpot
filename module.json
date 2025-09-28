@@ -10,7 +10,7 @@
   "authors": [
     {
       "name": "heissen",
-      "url": "https://github.com/heisssen",
+      "url": "https://github.com/heisssen"
     }
   ],
   "url": "https://github.com/heisssen/hotpot",
@@ -18,41 +18,57 @@
   "manifest": "https://github.com/heisssen/hotpot/releases/download/0.6.5/module.json",
   "readme": "README.md",
   "socket": false,
-"languages": [
-  {
-    "lang": "en",
-    "name": "English",
-    "path": "lang/en.json"
-  },
-  {
-    "lang": "uk",
-    "name": "Ukrainian",
-    "path": "lang/uk.json"
-  }
-],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "uk",
+      "name": "Ukrainian",
+      "path": "lang/uk.json"
+    }
+  ],
   "relationships": {
     "requires": [],
     "recommends": []
   },
-  "esmodules": ["hotpot.mjs"],
-  "styles": ["styles/hotpot.css"],
+  "esmodules": [
+    "hotpot.mjs"
+  ],
+  "styles": [
+    "styles/hotpot.css"
+  ],
   "documentTypes": {
     "Item": {
       "ingredient": {
-        "htmlFields": ["description"]
+        "htmlFields": [
+          "description"
+        ]
       }
     },
-    "ChatMessage" : {
+    "ChatMessage": {
       "hotpot": {
-        "htmlFields": ["recipe.description"],
-        "gmOnlyFields": ["completed"]
+        "htmlFields": [
+          "recipe.description"
+        ],
+        "gmOnlyFields": [
+          "completed"
+        ]
       }
     }
   },
   "flags": {
     "hotReload": {
-      "extensions": ["css", "hbs"],
-      "paths": ["styles/hotpot.css", "templates/"]
+      "extensions": [
+        "css",
+        "hbs"
+      ],
+      "paths": [
+        "styles/hotpot.css",
+        "templates/"
+      ]
     }
   }
 }
