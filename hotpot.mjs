@@ -3,19 +3,19 @@ const CONSTANTS = foundry.utils.deepFreeze({
   TEMPLATE_PATH: "modules/hotpot-daggerheart/templates",
   STEPS: [{
     index: 0,
-    label: "Select Ingredients",
+    label: "HOTPOT.Steps.Ingredients",
     id: "ingredients",
     icon: "fa-solid fa-kitchen-set",
   },
   {
     index: 1,
-    label: "Record Recipe",
+    label: "HOTPOT.Steps.Record",
     id: "record",
     icon: "fa-solid fa-book-bookmark",
   },
   {
     index: 2,
-    label: "Roll Flavor",
+    label: "HOTPOT.Steps.Roll",
     id: "roll",
     icon: "fa-solid fa-dice",
   }],
@@ -31,8 +31,8 @@ const CONSTANTS = foundry.utils.deepFreeze({
 class IngredientModel extends foundry.abstract.TypeDataModel {
   static get metadata() {
     return {
-      label: "Ingredient",
-      labelPlural: "Ingredients",
+      label: "HOTPOT.Item.Ingredient",
+      labelPlural: "HOTPOT.Item.Ingredients",
       type: `${CONSTANTS.MODULE_ID}.ingredient`,
       isInventoryItem: true
     };
@@ -103,7 +103,7 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
   static DEFAULT_OPTIONS = {
     classes: ["hotpot", "hotpot-config", "daggerheart", "dh-style", "dialog"],
     window: {
-      title: "Hotpot!",
+      title: "HOTPOT.Title",
       icon: "fa-solid fa-bowl-food",
       resizable: true,
     },
@@ -239,8 +239,8 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
     if (!documentClass) return
 
     const { collection, embedded } = foundry.utils.parseUuid(data.uuid);
-    if (collection instanceof foundry.documents.collections.CompendiumCollection) return ui.notifications.warn("The document must exist in the world, it is not a compendium");
-    if (!embedded.length) return ui.notifications.warn("may not be an embedded document");
+    if (collection instanceof foundry.documents.collections.CompendiumCollection) return ui.notifications.warn(game.i18n.localize("HOTPOT.Notifications.NotInWorld"));
+    if (!embedded.length) return ui.notifications.warn(game.i18n.localize("HOTPOT.Notifications.NotEmbedded"));
 
     const doc = await documentClass.fromDropData(data);
     if (doc.type !== IngredientModel.metadata.type) return;
@@ -254,7 +254,7 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
   }
 
   /* -------------------------------------------- */
-  /*  Context                                     */
+  /* Context                                     */
   /* -------------------------------------------- */
 
   get currentStep() { return this.document.system.currentStep; }
@@ -291,6 +291,8 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
       ...CONSTANTS.STEPS.find(({ id }) => id === partId),
       class: `${partId}${this.currentStep.id === partId ? " active" : ""}`,
     };
+    context.step.label = game.i18n.localize(context.step.label);
+
 
     switch (partId) {
       case "header":
@@ -307,8 +309,7 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
   }
 
   /**
-   * 
-   * @param {ApplicationRenderContext} context 
+   * * @param {ApplicationRenderContext} context 
    * @param {HandlebarsRenderOptions} options 
    */
   async _prepareHeaderContext(context, _options) {
@@ -327,13 +328,12 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
       else if (s.index === nextStep?.index) action = "nextStep";
       if (action && this.document.isOwner) classes.push("clickable");
 
-      return { ...s, classes: classes.join(" "), action };
+      return { ...s, label: game.i18n.localize(s.label), classes: classes.join(" "), action };
     });
   }
 
   /**
-   * 
-   * @param {ApplicationRenderContext} context 
+   * * @param {ApplicationRenderContext} context 
    * @param {HandlebarsRenderOptions} options 
    */
   async _prepareRollContext(context, _options) {
@@ -366,7 +366,7 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
   }
 
   /* -------------------------------------------- */
-  /*  Form Submit Handlers                        */
+  /* Form Submit Handlers                        */
   /* -------------------------------------------- */
 
   /** @inheritdoc*/
@@ -401,7 +401,7 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
   }
 
   /* -------------------------------------------- */
-  /*  Application Click Handlers                  */
+  /* Application Click Handlers                  */
   /* -------------------------------------------- */
 
   /**
@@ -421,8 +421,8 @@ class HotpotConfig extends HandlebarsApplicationMixin(DocumentSheetV2) {
     const { DialogV2 } = foundry.applications.api;
     if (!event.shiftKey) {
       const confirm = await DialogV2.confirm({
-        window: { title: "Previous Step" },
-        content: "<p>Return to a previous step? This could reset some fields.</p>"
+        window: { title: game.i18n.localize("HOTPOT.UI.PreviousStep") },
+        content: game.i18n.localize("HOTPOT.Dialogs.PreviousStepContent")
       });
       if (!confirm) return;
     }
@@ -522,8 +522,7 @@ function moduleToObject(module, includeDefault = false) {
 }
 
 /**
- * 
- * @param {foundry.utils.Collection} collection 
+ * * @param {foundry.utils.Collection} collection 
  * @param {String} flagKey 
  * @returns {foundry.abstract.Document[]}
  */
@@ -583,7 +582,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
     const { TypedObjectField, SchemaField, DocumentUUIDField, StringField, NumberField, BooleanField, ArrayField, HTMLField, ObjectField, ForeignDocumentField } = foundry.data.fields;
     return {
       recipe: new SchemaField({
-        name: new StringField({ initial: "New Recipe" }),
+        name: new StringField({ initial: game.i18n.localize("HOTPOT.Recipe.NewName") }),
         description: new HTMLField(),
         journal: new ForeignDocumentField(foundry.documents.BaseJournalEntry, { required: true }),
       }),
@@ -605,7 +604,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
   }
 
   /* -------------------------------------------- */
-  /*  Data Preparation                            */
+  /* Data Preparation                            */
   /* -------------------------------------------- */
 
   /**@override */
@@ -660,7 +659,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
     return Math.max(1, Math.min(...tiers));
   }
   /* -------------------------------------------- */
-  /*  Step Logic                                  */
+  /* Step Logic                                  */
   /* -------------------------------------------- */
 
   /**
@@ -703,7 +702,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
   }
 
   /* -------------------------------------------- */
-  /*  Hotpot Logic                                */
+  /* Hotpot Logic                                */
   /* -------------------------------------------- */
 
   /**
@@ -759,7 +758,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
       Object.entries(this.totals).map(([k, v]) => [k, v.strength])
     );
 
-    const flavorProfileText = `<h2>Flavor Profile</h2> ${Object.values(this.totals).map(v => `<p>${v.label}(d${v.dieFace}): ${v.strength}</p>`).join("")}`;
+    const flavorProfileText = `<h2>${game.i18n.localize("HOTPOT.UI.FlavorProfile")}</h2> ${Object.values(this.totals).map(v => `<p>${v.label}(d${v.dieFace}): ${v.strength}</p>`).join("")}`;
     return JournalEntryPage.implementation.create({
       name,
       "text.content": description + flavorProfileText,
@@ -778,7 +777,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
     const categories = parent.categories.contents ?? [];
 
     return JournalEntryCategory.implementation.create({
-      name: "Hotpot Recipes",
+      name: game.i18n.localize("HOTPOT.Recipe.CategoryName"),
       sort: (categories.length + 1) * CONST.SORT_INTEGER_DENSITY,
       [`flags.${CONSTANTS.MODULE_ID}.${CONSTANTS.JOURNAL_FLAGS.CATEGORY}`]: true
     }, { parent });
@@ -787,7 +786,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
 
 
   /* -------------------------------------------- */
-  /*  Lifecycle Methods                           */
+  /* Lifecycle Methods                           */
   /* -------------------------------------------- */
 
   /**
@@ -808,8 +807,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
   }
 
   /**
-   * 
-   * @param {import("@common/documents/_types.mjs").ChatMessageData} data - The initial data object provided to the document creation request
+   * * @param {import("@common/documents/_types.mjs").ChatMessageData} data - The initial data object provided to the document creation request
    * @param {Object} options - Additional options which modify the creation request
    * @param {foundry.documents.User} user - The id of the User requesting the document update
    * @inheritdoc
@@ -898,7 +896,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
 
 
   /* -------------------------------------------- */
-  /*  Rendering                                   */
+  /* Rendering                                   */
   /* -------------------------------------------- */
 
   /**
@@ -928,7 +926,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
 
     const steps = CONSTANTS.STEPS.map((s) => {
       const classes = getClasses(s.index).join(" ");
-      return { ...s, classes };
+      return { ...s, label: game.i18n.localize(s.label), classes };
     });
 
     return {
@@ -938,7 +936,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
   }
 
   /* -------------------------------------------- */
-  /*  Hook Callback Handler                       */
+  /* Hook Callback Handler                       */
   /* -------------------------------------------- */
 
   /**
@@ -962,7 +960,7 @@ class HotpotMessageData extends foundry.abstract.TypeDataModel {
   }
 
   /* -------------------------------------------- */
-  /*  Click Callbacks                             */
+  /* Click Callbacks                             */
   /* -------------------------------------------- */
 
   /**
@@ -1026,7 +1024,7 @@ function createIngredientSheet() {
       const context = await super._prepareContext(options);
       context.flavorChoices = [{ key: "" },
       ...Object.entries(CONFIG.HOTPOT.flavors)
-        .map(([key, v]) => ({ key, label: `${v.label} (d${v.dieFace})` }))
+        .map(([key, v]) => ({ key, label: `${game.i18n.localize(v.label)} (d${v.dieFace})` }))
         .filter(f => !Object.keys(this.item.system.flavors).includes(f.key))];
 
       context.enrichedDescription = await foundry.applications.ux.TextEditor.enrichHTML(this.item.system.description, {
@@ -1039,7 +1037,7 @@ function createIngredientSheet() {
     }
 
     /* -------------------------------------------- */
-    /*  Context Menu                                */
+    /* Context Menu                                */
     /* -------------------------------------------- */
 
     /**
@@ -1062,12 +1060,11 @@ function createIngredientSheet() {
 
 
     /* -------------------------------------------- */
-    /*  Event Listeners and Handlers                */
+    /* Event Listeners and Handlers                */
     /* -------------------------------------------- */
 
     /**
-     * 
-     * @this {IngredientSheet}
+     * * @this {IngredientSheet}
      * @type {import("@client/applications/_types.mjs").ApplicationClickAction}
      */
     static async #onAddFlavor() {
@@ -1091,8 +1088,7 @@ var apps = /*#__PURE__*/Object.freeze({
 });
 
 /**
- * 
- * @param {foundry.applications.sheets.ActorSheetV2} application 
+ * * @param {foundry.applications.sheets.ActorSheetV2} application 
  * @param {HTMLElement} element 
  * @param {import("@client/applications/_types.mjs").ApplicationRenderContext} context 
  * @param {import("@client/applications/_types.mjs").ApplicationRenderOptions} options 
@@ -1174,27 +1170,27 @@ var socket = /*#__PURE__*/Object.freeze({
 const HOTPOT$1 = {
   flavors: {
     sweet: {
-      label: "Sweet",
+      label: "HOTPOT.Flavors.Sweet",
       dieFace: 4
     },
     salty: {
-      label: "Salty",
+      label: "HOTPOT.Flavors.Salty",
       dieFace: 6
     },
     bitter: {
-      label: "Bitter",
+      label: "HOTPOT.Flavors.Bitter",
       dieFace: 8
     },
     sour: {
-      label: "Sour",
+      label: "HOTPOT.Flavors.Sour",
       dieFace: 10
     },
     savory: {
-      label: "Savory",
+      label: "HOTPOT.Flavors.Savory",
       dieFace: 12
     },
     weird: {
-      label: "Weird",
+      label: "HOTPOT.Flavors.Weird",
       dieFace: 20
     },
   }

@@ -3,14 +3,14 @@
   <div class="flexrow">
     <div class="inputs-continers flexcol">
       <input value="{{document.system.mealRating}}" name="system.mealRating" type="number" {{disabled (not isGM)}}>
-      <div class="label-input">Meal Ratings</div>
+      <div class="label-input">{{localize 'HOTPOT.UI.MealRating'}}</div>
     </div>
     <div class="inputs-continers flexcol">
       <input class="input-tokens" name="system.tokens" value="{{document.system.tokens}}" type="number" {{disabled (not isGM)}}>
-      <div class="label-input"> Tokens </div>
+      <div class="label-input">{{localize 'HOTPOT.UI.Tokens'}}</div>
     </div>
     {{#if isGM}}
-    <button class="finish-button" data-action="finishHotpot" data-tooltip="Finish Hotpot">
+    <button class="finish-button" data-action="finishHotpot" data-tooltip="{{localize 'HOTPOT.UI.FinishHotpot'}}">
       <i class="fa-regular fa-pot-food"></i>
       <i class="fa-regular fa-circle-check"></i>
     </button>
@@ -31,7 +31,7 @@
   </div>
   <div class="flexrow dice-panel">
     <fieldset class="matched-dice">
-      <legend>Matched Dice</legend>
+      <legend>{{localize 'HOTPOT.UI.MatchedDice'}}</legend>
       <div class="flexcol matched-col scrollable">
         {{#each matchedDice as |dice result|}}
         <div class="matched-dice-results">
@@ -46,15 +46,15 @@
       </div>
       <line-div></line-div>
       <div class="flexrow total-section">
-        <div class="total-label">Total: {{totalMatch}}</div>
+        <div class="total-label">{{localize 'HOTPOT.UI.Total'}} {{totalMatch}}</div>
         {{#if isGM}}
-        <a class="icon fa-regular fa-arrow-right-to-bracket" data-tooltip="Collect Matches Sets"
+        <a class="icon fa-regular fa-arrow-right-to-bracket" data-tooltip="{{localize 'HOTPOT.UI.CollectMatches'}}"
           data-action="collectMatched" {{disabled (not totalMatch )}}></a>
         {{/if}}
       </div>
     </fieldset>
     <fieldset class="current-pool">
-      <legend>Current Pool</legend>
+      <legend>{{localize 'HOTPOT.UI.CurrentPool'}}</legend>
       <div class="current-pool-dice">
         {{#each document.system.currentPool as |v k|}}
         <div class="flavor-tag {{#unless v}}inactive{{/unless}}" data-flavor="{{key}}">
@@ -65,7 +65,7 @@
       </div>
       {{#if isGM}}
       <div class="button-panel flexrow">
-        <button type="button" data-action="rollFlavor" {{disabled dicePoolIsEmpty}}>Roll</button>
+        <button type="button" data-action="rollFlavor" {{disabled dicePoolIsEmpty}}>{{localize 'HOTPOT.UI.Roll'}}</button>
       </div>
       {{/if}}
     </fieldset>

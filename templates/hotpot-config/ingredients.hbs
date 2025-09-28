@@ -1,9 +1,9 @@
 <div class="flexcol step-content {{step.class}}" data-step-id="{{step.id}}">
   <h4 class="step-title">{{step.label}}</h4>
   <fieldset class="flexcol ingredients-section">
-    <legend>Ingredients</legend>
+    <legend>{{localize 'HOTPOT.UI.Ingredients'}}</legend>
     <div class="drag-area">
-      Drop Ingredients Here
+      {{localize 'HOTPOT.UI.DropIngredients'}}
     </div>
     <ul class="ingredients-list scrollable">
     {{#each ingredients}}

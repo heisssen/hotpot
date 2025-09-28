@@ -1,0 +1,49 @@
+{
+  "HOTPOT": {
+    "Title": "Хотпот!",
+    "Steps": {
+      "Ingredients": "Вибір інгредієнтів",
+      "Record": "Запис рецепта",
+      "Roll": "Кидок смаку"
+    },
+    "Item": {
+      "Ingredient": "Інгредієнт",
+      "Ingredients": "Інгредієнти"
+    },
+    "Notifications": {
+      "NotInWorld": "Документ має існувати у світі, а не в компендіумі.",
+      "NotEmbedded": "Не можна використовувати вбудований документ."
+    },
+    "Dialogs": {
+      "PreviousStepContent": "<p>Повернутися до попереднього кроку? Деякі поля можуть бути скинуті.</p>"
+    },
+    "UI": {
+      "PreviousStep": "Попередній крок",
+      "FinishHotpot": "Завершити Хотпот",
+      "OpenHotpot": "Відкрити Хотпот",
+      "Ingredients": "Інгредієнти",
+      "DropIngredients": "Перетягніть інгредієнти сюди",
+      "MealRating": "Рейтинг страви",
+      "Tokens": "Жетони",
+      "MatchedDice": "Збіги кубиків",
+      "Total": "Всього:",
+      "CollectMatches": "Зібрати збіги",
+      "CurrentPool": "Поточний пул",
+      "Roll": "Кинути",
+      "CookbookJournal": "Журнал рецептів",
+      "FlavorProfile": "Смаковий профіль"
+    },
+    "Recipe": {
+      "NewName": "Новий рецепт",
+      "CategoryName": "Рецепти Казанка"
+    },
+    "Flavors": {
+      "Sweet": "Солодкий",
+      "Salty": "Солоний",
+      "Bitter": "Гіркий",
+      "Sour": "Кислий",
+      "Savory": "Пікантний",
+      "Weird": "Дивний"
+    }
+  }
+}
