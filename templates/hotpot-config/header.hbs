@@ -1,0 +1,9 @@
+<section class="header">
+  <div class="stepper" style="--progress: calc(({{document.system.step}} / 2) * 100%)">
+    {{#each steps}}
+    <div class="step {{classes}}" data-tooltip="{{label}}" {{#if action}}data-action="{{action}}"{{/if}}>
+      <i class="{{icon}}"></i>
+    </div>
+    {{/each}}
+  </div>
+</section>

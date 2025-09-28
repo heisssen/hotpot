@@ -1,0 +1,15 @@
+<div class="hotpot chat-msg">
+  <div class="stepper" style="--progress: calc(({{system.step}} / 2) * 100%)">
+    {{#each steps}}
+    <div class="step {{classes}}" data-tooltip="{{label}}">
+      <i class="{{icon}}"></i>
+    </div>
+    {{/each}}
+  </div>
+  <div class="button-container">
+    <button type="button" data-action="openHotpot" {{disabled system.completed}}>
+      <i class="fa-solid fa-pot-food"></i>
+      Open Hotpot
+    </button>
+  </div>
+</div>

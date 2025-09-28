@@ -1,0 +1,400 @@
+.hotpot {
+  --gold-color: #f3c267;
+  --dark-blue-color: #18162e;
+  --gold-color-40: #f3c26740;
+  --dark-blue-color-40: #18162e40;
+  --beige-color: #efe6d8;
+  --magic-number: 0.3s;
+  --montserrat-font: "Montserrat", sans-serif;
+  * {
+    scrollbar-color: light-dark(var(--dark-blue-color), var(--gold-color))
+      transparent;
+  }
+
+  .flavor-tag {
+    display: flex;
+    border-radius: 0.5rem;
+    border: 1px solid light-dark(var(--dark-blue-color), var(--gold-color));
+    overflow: hidden;
+    &.inactive {
+      opacity: 0.7;
+    }
+
+    span.flavor-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0.25em;
+      flex: 1;
+      font-weight: 600;
+      white-space: nowrap;
+      background: light-dark(transparent, var(--gold-color));
+      color: var(--dark-blue-color);
+      font-family: var(--montserrat-font);
+    }
+
+    input.flavor-strength {
+      flex: 0 0 4ch;
+      height: auto;
+      text-align: center;
+      font-size: 1em;
+      border-radius: 0 0.5em 0.5em 0;
+      border: none;
+      outline: 0;
+      margin: 2px;
+      --input-height: 1.5em;
+      &:disabled {
+        cursor: default;
+      }
+    }
+
+    &:focus-within {
+      outline: 2px solid light-dark(#222, var(--beige-color));
+      outline-offset: -2px;
+    }
+  }
+
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    &::before {
+      --pogress-c: light-dark(var(--dark-blue-color), var(--gold-color));
+      --pogress-c2: light-dark(var(--dark-blue-color-40), var(--gold-color-40));
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      transition: width var(--magic-number);
+      background: linear-gradient(
+        to right,
+        var(--pogress-c) 0%,
+        var(--pogress-c) var(--progress),
+        var(--pogress-c2) var(--progress),
+        var(--pogress-c2) 100%
+      );
+    }
+
+    .step {
+      font-size: 25px;
+      overflow: hidden;
+      z-index: 1;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid light-dark(var(--dark-blue-color), var(--gold-color));
+      background: light-dark(white, var(--dark-blue-color));
+      transition: transform var(--magic-number);
+      &.completed {
+        background: var(--gold-color);
+        color: var(--dark-blue-color);
+      }
+      &.active {
+        box-shadow: 0 0 5px 1px
+          light-dark(var(--dark-blue-color), var(--gold-color));
+        transform: scale(1.1);
+      }
+      &.inactive {
+        opacity: 0.7;
+        transform: scale(0.8);
+      }
+    }
+  }
+
+  &.ingredient .main-section {
+    padding: 0 10px;
+
+    .flavor-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+    }
+  }
+
+  &.hotpot-config {
+    .step-content {
+      height: 100%;
+      overflow: hidden;
+
+      &:not(.active) {
+        display: none;
+      }
+      .step-title {
+        margin: 10px 0;
+        text-align: center;
+        font-family: "Cinzel", serif;
+        border: none;
+        font-weight: normal;
+      }
+    }
+
+    .step-content.ingredients {
+      .ingredients-section {
+        flex: 1 1 auto;
+        min-height: 150px;
+        overflow: hidden;
+        align-items: stretch;
+
+        .ingredients-list {
+          margin-top: 5px;
+          flex: 1 1 auto;
+          min-height: 0;
+
+          .item {
+            padding-bottom: 5px;
+          }
+          .item-row,
+          .item-column {
+            display: flex;
+            align-items: center;
+            text-align: center;
+          }
+          .flavor-row {
+            padding: 0 5px;
+            font-size: 12px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 10px;
+          }
+
+          .item-name {
+            flex: 1;
+            text-align: left;
+            padding: 5px 0px 5px 5px;
+            .name {
+              font-weight: bold;
+              font-size: var(--font-size-15);
+            }
+            img {
+              width: 24px;
+              height: 24px;
+              border: none;
+              object-fit: cover;
+              object-position: top center;
+            }
+          }
+          .item-quantity {
+            .quantity-control {
+              padding: 0px 5px;
+              &[disabled] {
+                opacity: 0.2;
+              }
+            }
+            .quantity-input {
+              text-align: center;
+              width: 4ch;
+              font-size: var(--font-size-15);
+              --input-height: 1.5rem;
+            }
+          }
+          .item-user {
+            border: 1px solid
+              light-dark(var(--dark-blue-color), var(--gold-color));
+            padding: 3px 5px;
+            border-radius: 4px;
+            opacity: 0.5;
+            margin: 0 5px;
+          }
+          .item-controls {
+            flex: 0 0 40px;
+            justify-content: space-around;
+          }
+        }
+      }
+    }
+
+    .step-content.record {
+      .recipe-fields {
+        flex: 1 1 auto;
+        gap: 10px;
+        .name-input {
+          font-family: var(--montserrat-font);
+          font-weight: bold;
+          font-size: 32px;
+          height: 42px;
+          text-align: start;
+          outline: 2px solid transparent;
+        }
+        .description-fieldset {
+          flex: 1 1 auto;
+        }
+      }
+    }
+
+    .step-content.roll {
+      .inputs-continers {
+        height: 80px;
+        margin: 0 10px;
+        align-items: center;
+        justify-content: center;
+
+        .label-input {
+          font-family: var(--montserrat-font);
+          padding: 2px 10px;
+          border-radius: 3px;
+          background: light-dark(var(--dark-blue-color), var(--gold-color));
+          color: light-dark(var(--beige-color), var(--dark-blue-color));
+          width: 100%;
+          width: -webkit-fill-available;
+          text-align: center;
+          font-weight: bold;
+          font-size: 15px;
+        }
+        input {
+          width: calc(100% - 20px);
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          border-bottom: 0;
+          border-color: light-dark(var(--dark-blue-color), var(--gold-color));
+          text-align: center;
+          font-size: 25px;
+          --input-height: 1.5em;
+          &:disabled {
+            cursor: inherit;
+          }
+        }
+      }
+      .finish-button {
+        flex: 0;
+        font-size: 25px;
+      }
+      .roll-container {
+        flex: 1 1 auto;
+        overflow: auto;
+        margin: 5px;
+        margin-right: 0;
+        padding-right: 5px;
+        .dice-pool {
+          height: 100%;
+          gap: 10px;
+          padding: 5px;
+          background-color: rgba(0, 0, 0, 0.2);
+          border-radius: 0.5rem;
+
+          .dice-container {
+            display: flex;
+            justify-content: center;
+
+            .dice {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 25px;
+              transition: all var(--magic-number);
+              &::before {
+                transition: box-shadow var(--magic-number);
+              }
+              &:not(.matched) {
+                opacity: 0.6;
+              }
+              &.hovered {
+                transform: scale(1.1);
+              }
+              &.hovered.matched::before {
+                box-shadow: inset 0 0 10px 3px
+                  light-dark(var(--dark-blue-color), var(--gold-color));
+              }
+              &.hovered:not(.matched) {
+                opacity: 1;
+              }
+              &.hovered:not(.matched)::before {
+                box-shadow: inset 0 0 10px 3px #3c0000;
+              }
+            }
+          }
+        }
+      }
+      .dice-panel {
+        flex: 0 0 auto;
+        align-items: stretch;
+        .matched-dice {
+          .matched-col {
+            max-height: 90px;
+            .matched-dice-results {
+              display: flex;
+              align-items: stretch;
+            }
+            .result {
+              flex: 0 0 2.5ch;
+              font-size: large;
+              padding: 0 0.25em;
+              font-family: "Cinzel", serif;
+              font-weight: bold;
+              text-align: end;
+              white-space: nowrap;
+            }
+          }
+          .total-label {
+            font-size: large;
+            padding: 0 0.25em;
+            font-family: "Cinzel", serif;
+          }
+          a.icon {
+            flex: 0 0 20px;
+            &[disabled] {
+              opacity: 0.4;
+            }
+          }
+          .die-icons {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.25em;
+            font-size: 16px;
+          }
+          line-div {
+            margin: 5px 0;
+          }
+        }
+        .current-pool {
+          .current-pool-dice {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+          }
+          .button-panel {
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+
+    .header .stepper .step.clickable {
+      cursor: pointer;
+      opacity: 0.9;
+      transform: scale(0.9);
+      &:hover {
+        transform: scale(1);
+        box-shadow: 0 0 5px 1px
+          light-dark(var(--dark-blue-color), var(--gold-color));
+      }
+    }
+
+    .flavors-counters {
+      margin: 0.5rem 0;
+      font-size: 15px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+  }
+
+  &.chat-msg {
+    padding-top: 5px;
+    .button-container {
+      display: flex;
+      margin-top: 10px;
+      justify-content: center;
+      button {
+        font-size: large;
+      }
+    }
+  }
+}

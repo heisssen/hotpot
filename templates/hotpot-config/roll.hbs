@@ -1,0 +1,73 @@
+<section class="flexcol step-content {{step.class}}" data-step-id="{{step.id}}">
+  <h4 class="step-title">{{step.label}}</h4>
+  <div class="flexrow">
+    <div class="inputs-continers flexcol">
+      <input value="{{document.system.mealRating}}" name="system.mealRating" type="number" {{disabled (not isGM)}}>
+      <div class="label-input">Meal Ratings</div>
+    </div>
+    <div class="inputs-continers flexcol">
+      <input class="input-tokens" name="system.tokens" value="{{document.system.tokens}}" type="number" {{disabled (not isGM)}}>
+      <div class="label-input"> Tokens </div>
+    </div>
+    {{#if isGM}}
+    <button class="finish-button" data-action="finishHotpot" data-tooltip="Finish Hotpot">
+      <i class="fa-regular fa-pot-food"></i>
+      <i class="fa-regular fa-circle-check"></i>
+    </button>
+    {{/if}}
+  </div>
+  <div class="flexrow roll-container scrollable">
+    <div class="dice-pool flexrow">
+      {{#each dice as |die|}}
+      {{#each die.results}}
+      <div class="dice-container">
+        <div class="dice d{{die.faces}} {{ifThen matched 'matched'}}" data-result="{{result}}">
+          {{result}}
+        </div>
+      </div>
+      {{/each}}
+      {{/each}}
+    </div>
+  </div>
+  <div class="flexrow dice-panel">
+    <fieldset class="matched-dice">
+      <legend>Matched Dice</legend>
+      <div class="flexcol matched-col scrollable">
+        {{#each matchedDice as |dice result|}}
+        <div class="matched-dice-results">
+          <span class="result">{{result}}:</span>
+          <div class="die-icons">
+            {{#each dice as |faces|}}
+            <i class="die-icon fa-solid fa-dice-d{{faces}}"></i>
+            {{/each}}
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      <line-div></line-div>
+      <div class="flexrow total-section">
+        <div class="total-label">Total: {{totalMatch}}</div>
+        {{#if isGM}}
+        <a class="icon fa-regular fa-arrow-right-to-bracket" data-tooltip="Collect Matches Sets"
+          data-action="collectMatched" {{disabled (not totalMatch )}}></a>
+        {{/if}}
+      </div>
+    </fieldset>
+    <fieldset class="current-pool">
+      <legend>Current Pool</legend>
+      <div class="current-pool-dice">
+        {{#each document.system.currentPool as |v k|}}
+        <div class="flavor-tag {{#unless v}}inactive{{/unless}}" data-flavor="{{key}}">
+          <span class="flavor-label"> {{k}}</span>
+          <input class="flavor-strength" type="number" name="system.currentPool.{{k}}" value="{{v}}" {{disabled (not @root.isGM)}}>
+        </div>
+        {{/each}}
+      </div>
+      {{#if isGM}}
+      <div class="button-panel flexrow">
+        <button type="button" data-action="rollFlavor" {{disabled dicePoolIsEmpty}}>Roll</button>
+      </div>
+      {{/if}}
+    </fieldset>
+  </div>
+</section>

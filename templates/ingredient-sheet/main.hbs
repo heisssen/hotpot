@@ -1,0 +1,26 @@
+<section class="main-section scrollable">
+    <fieldset class="standard-form">
+        <legend>
+            Flavor Profile
+        </legend>
+        <div class="form-fields">
+            <select id="{{rootId}}-newFlavorType">
+                {{selectOptions flavorChoices valueAttr="key" labelAttr="label"}}
+            </select>
+            <button type="button" data-action="addFlavor" class="icon fa-solid fa-plus"></button>
+        </div>
+        <div class="flavor-tags">
+        {{#each document.system.flavors as |flavor key|}}
+        <div class="flavor-tag" data-flavor="{{key}}">
+            <span class="flavor-label"> {{flavor.label}} (d{{flavor.dieFace}}) </span>
+            <input class="flavor-strength" type="number" name="system.flavors.{{key}}.strength" max="3" value="{{flavor.strength}}">
+        </div>
+        {{/each}}
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{localize "DAGGERHEART.GENERAL.description"}}</legend>
+        {{formInput systemFields.description value=document.system.description enriched=enrichedDescription
+        toggled=true}}
+    </fieldset>
+</section>

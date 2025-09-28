@@ -1,0 +1,17 @@
+<section class="flexcol step-content {{step.class}}" data-step-id="{{step.id}}">
+  <h4 class="step-title">{{step.label}}</h4>
+  <div class="flexcol recipe-fields">
+    <input type="text" class="name-input" name="system.recipe.name" value="{{document.system.recipe.name}}" {{disabled (not isGM)}}>
+    {{formGroup journal.field value=journal.value.id label="Cookbook Journal"  disabled=(not isGM)}}
+    <fieldset class="description-fieldset">
+      {{#if isGM}}
+      {{formInput description.field value=description.value enriched=description.enriched toggled=true}}
+      {{else}}
+      <div>
+        {{{description.enriched}}}
+      </div>
+      {{/if}}
+    </fieldset>
+  </div>
+
+</section>

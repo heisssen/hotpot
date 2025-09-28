@@ -1,0 +1,57 @@
+<div class="flexcol step-content {{step.class}}" data-step-id="{{step.id}}">
+  <h4 class="step-title">{{step.label}}</h4>
+  <fieldset class="flexcol ingredients-section">
+    <legend>Ingredients</legend>
+    <div class="drag-area">
+      Drop Ingredients Here
+    </div>
+    <ul class="ingredients-list scrollable">
+    {{#each ingredients}}
+      <li class="item" data-item-id="{{document.id}}">
+        <div class="item-row">
+          <div class="item-column item-name">
+            <img src="{{document.img}}" alt="{{document.name}}">
+            <div class="name">{{document.name}}</div>
+          </div>
+          <div class="item-colums item-user">
+            {{document.parent.name}}
+          </div>
+          {{#if document.isOwner}}
+          <div class="item-column item-quantity">
+            <a class="quantity-control fa-regular fa-minus" data-action="modifyItemQuantity"
+              data-modification="decrease" {{disabled (eq 1 quantity)}}></a>
+
+            <input class="quantity-input" name="ingredients.{{document.id}}.quantity" max="{{document.system.quantity}}"
+              type="number" value="{{quantity}}">
+
+            <a class="quantity-control fa-regular fa-plus" data-action="modifyItemQuantity" data-modification="increase"
+              {{disabled (eq document.system.quantity quantity)}}></a>
+          </div>
+          <div class="item-column item-controls">
+            <a class="item-control fa-regular fa-trash" data-action="removeIngredient"></a>
+          </div>
+          {{/if}}
+        </div>
+        <div class="item-row flavor-row">
+          {{#each document.system.flavors as |flavor key|}}
+          <div class="flavor-tag" data-flavor="{{key}}">
+            <span class="flavor-label"> {{flavor.label}} (d{{flavor.dieFace}}) </span>
+            <input class="flavor-strength" type="number" value="{{flavor.strength}}" disabled>
+          </div>
+          {{/each}}
+        </div>
+      </li>
+    {{/each}}
+    </ul>
+  </fieldset>
+  <fieldset>
+    <div class="flavors-counters">
+      {{#each document.system.totals as |flavor key|}}
+      <div class="flavor-tag{{#unless flavor.strength}} inactive{{/unless}}" data-flavor="{{key}}">
+        <span class="flavor-label"> {{flavor.label}} (d{{flavor.dieFace}}) </span>
+        <input class="flavor-strength" type="number" value="{{flavor.strength}}" disabled>
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+</div>
